@@ -15,96 +15,97 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+// import { toRefs } from 'vue'
+import useTodos from '../use/todo'
 
 export default {
     name: 'todolist',
     setup(){
-        const { todolist } = useTodos();
+        // const { todolist } = useTodos();
 
-        return { 
-            ...toRefs(todolist)
-        }
-        // const { newTodo, todos, saveTodo, addTodo, removeTodo, doneTodo } = useTodos();
-
-        // return {
-        //     newTodo,
-        //     todos,
-        //     saveTodo,
-        //     addTodo,
-        //     removeTodo,
-        //     doneTodo
+        // return { 
+        //     ...toRefs(todolist)
         // }
+        const { newTodo, todos, saveTodo, addTodo, removeTodo, doneTodo } = useTodos();
+
+        return {
+            newTodo,
+            todos,
+            saveTodo,
+            addTodo,
+            removeTodo,
+            doneTodo
+        }
     },
 }
 
-function useTodos(){
-  const defaultData = [{
-			done: false,
-			content: 'Write a blog post'
-		}]
-  const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
-
-  const todolist = reactive({
-      newTodo: '',
-      todos: todosData,
-      saveTodo: ()=>{
-          localStorage.setItem('todos', JSON.stringify(todolist.todos))
-      },
-      addTodo: ()=>{
-        if(todolist.newTodo){
-            todolist.todos.push({ done: false, content: todolist.newTodo})
-            todolist.newTodo = ''
-            todolist.saveTodo()
-        }
-      },
-      doneTodo: (todo)=>{
-          todo.done = !todo.done
-          todolist.saveTodo()
-      },
-      removeTodo: (index)=>{
-          todolist.todos.splice(index, 1)
-          todolist.saveTodo()
-      },
-  })
-
-  return {
-      todolist
-  }
-//   const newTodo = ref('')
+// function useTodos(){
 //   const defaultData = [{
 // 			done: false,
 // 			content: 'Write a blog post'
 // 		}]
 //   const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
-//   const todos = ref(todosData)
-//   function saveTodo(){
-//       localStorage.setItem('todos', JSON.stringify(todos.value))
-//   }
-//   function addTodo(){
-//       if(newTodo.value){
-//         todos.value.push({ done: false, content: newTodo.value})
-//         newTodo.value = ''
-//         saveTodo()
-//       }
-//   }
-//   function doneTodo(todo){
-//       todo.done = !todo.done
-//       saveTodo()
-//   }
-//   function removeTodo(index){
-//       todos.value.splice(index, 1)
-//       saveTodo()
-//   }
+
+//   const todolist = reactive({
+//       newTodo: '',
+//       todos: todosData,
+//       saveTodo: ()=>{
+//           localStorage.setItem('todos', JSON.stringify(todolist.todos))
+//       },
+//       addTodo: ()=>{
+//         if(todolist.newTodo){
+//             todolist.todos.push({ done: false, content: todolist.newTodo})
+//             todolist.newTodo = ''
+//             todolist.saveTodo()
+//         }
+//       },
+//       doneTodo: (todo)=>{
+//           todo.done = !todo.done
+//           todolist.saveTodo()
+//       },
+//       removeTodo: (index)=>{
+//           todolist.todos.splice(index, 1)
+//           todolist.saveTodo()
+//       },
+//   })
+
 //   return {
-//     newTodo,
-//     todos,
-//     saveTodo,
-//     addTodo,
-//     removeTodo,
-//     doneTodo
+//       todolist
 //   }
-}
+// //   const newTodo = ref('')
+// //   const defaultData = [{
+// // 			done: false,
+// // 			content: 'Write a blog post'
+// // 		}]
+// //   const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
+// //   const todos = ref(todosData)
+// //   function saveTodo(){
+// //       localStorage.setItem('todos', JSON.stringify(todos.value))
+// //   }
+// //   function addTodo(){
+// //       if(newTodo.value){
+// //         todos.value.push({ done: false, content: newTodo.value})
+// //         newTodo.value = ''
+// //         saveTodo()
+// //       }
+// //   }
+// //   function doneTodo(todo){
+// //       todo.done = !todo.done
+// //       saveTodo()
+// //   }
+// //   function removeTodo(index){
+// //       todos.value.splice(index, 1)
+// //       saveTodo()
+// //   }
+// //   return {
+// //     newTodo,
+// //     todos,
+// //     saveTodo,
+// //     addTodo,
+// //     removeTodo,
+// //     doneTodo
+// //   }
+// }
 
 </script>
 
