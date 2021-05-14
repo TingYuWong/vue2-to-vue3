@@ -1,6 +1,6 @@
 <template>
     <div class="todo-wrap">
-        <div class="todo-title">Task For Todays</div>
+        <div class="todo-title">Tasks For A Week</div>
         <div class="todo-white-bg">
             <input class="todo-input" type="text" v-model="newTodo" @keyup.enter="addTodo"/>
             <div class="todo-items-wrap">
@@ -15,58 +15,95 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 
 export default {
     name: 'todolist',
     setup(){
-        const { newTodo, todos, saveTodo, addTodo, removeTodo, doneTodo } = useTodos();
+        const { todolist } = useTodos();
 
-        return {
-            newTodo,
-            todos,
-            saveTodo,
-            addTodo,
-            removeTodo,
-            doneTodo
+        return { 
+            ...toRefs(todolist)
         }
+        // const { newTodo, todos, saveTodo, addTodo, removeTodo, doneTodo } = useTodos();
+
+        // return {
+        //     newTodo,
+        //     todos,
+        //     saveTodo,
+        //     addTodo,
+        //     removeTodo,
+        //     doneTodo
+        // }
     },
 }
 
 function useTodos(){
-  const newTodo = ref('')
   const defaultData = [{
 			done: false,
 			content: 'Write a blog post'
 		}]
   const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
-  const todos = ref(todosData)
-  function saveTodo(){
-      localStorage.setItem('todos', JSON.stringify(todos.value))
-  }
-  function addTodo(){
-      if(newTodo.value){
-        todos.value.push({ done: false, content: newTodo.value})
-        newTodo.value = ''
-        saveTodo()
-      }
-  }
-  function doneTodo(todo){
-      todo.done = !todo.done
-      saveTodo()
-  }
-  function removeTodo(index){
-      todos.value.splice(index, 1)
-      saveTodo()
-  }
+
+  const todolist = reactive({
+      newTodo: '',
+      todos: todosData,
+      saveTodo: ()=>{
+          localStorage.setItem('todos', JSON.stringify(todolist.todos))
+      },
+      addTodo: ()=>{
+        if(todolist.newTodo){
+            todolist.todos.push({ done: false, content: todolist.newTodo})
+            todolist.newTodo = ''
+            todolist.saveTodo()
+        }
+      },
+      doneTodo: (todo)=>{
+          todo.done = !todo.done
+          todolist.saveTodo()
+      },
+      removeTodo: (index)=>{
+          todolist.todos.splice(index, 1)
+          todolist.saveTodo()
+      },
+  })
+
   return {
-    newTodo,
-    todos,
-    saveTodo,
-    addTodo,
-    removeTodo,
-    doneTodo
+      todolist
   }
+//   const newTodo = ref('')
+//   const defaultData = [{
+// 			done: false,
+// 			content: 'Write a blog post'
+// 		}]
+//   const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
+//   const todos = ref(todosData)
+//   function saveTodo(){
+//       localStorage.setItem('todos', JSON.stringify(todos.value))
+//   }
+//   function addTodo(){
+//       if(newTodo.value){
+//         todos.value.push({ done: false, content: newTodo.value})
+//         newTodo.value = ''
+//         saveTodo()
+//       }
+//   }
+//   function doneTodo(todo){
+//       todo.done = !todo.done
+//       saveTodo()
+//   }
+//   function removeTodo(index){
+//       todos.value.splice(index, 1)
+//       saveTodo()
+//   }
+//   return {
+//     newTodo,
+//     todos,
+//     saveTodo,
+//     addTodo,
+//     removeTodo,
+//     doneTodo
+//   }
 }
 
 </script>
