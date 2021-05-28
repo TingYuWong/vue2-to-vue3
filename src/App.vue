@@ -1,23 +1,14 @@
 <template>
   <TodoList />
-  <!-- <Reac /> -->
 </template>
 
 <script>
 import TodoList from './components/todolist'
-// import Reac from './components/reac'
-// import { ref, reactive } from 'vue'
 
 export default {
   name: "App",
   components: {
     TodoList,
-    // Reac,
-  },
-  mounted(){
-    // const user = reactive({ name: 'Tina', age: 25 })
-    // const age = ref({ name: 'Tina', age: 25 })
-    // console.log(user, age)
   },
 };
 
