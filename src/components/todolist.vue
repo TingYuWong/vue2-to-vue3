@@ -15,21 +15,39 @@
 </template>
 
 <script>
-import useTodos from '../use/todo'
+const defaultData = [{
+            done: false,
+            content: 'Write a blog post'
+        }]
+const todosData = JSON.parse(localStorage.getItem('todos')) || defaultData
 
 export default {
     name: 'todolist',
-    setup(){
-        const { newTodo, todos, saveTodo, addTodo, removeTodo, doneTodo } = useTodos();
-
+    data(){
         return {
-            newTodo,
-            todos,
-            saveTodo,
-            addTodo,
-            removeTodo,
-            doneTodo
+            newTodo: '',
+            todos: todosData,
         }
+    },
+    methods: {
+        saveTodo: ()=>{
+            localStorage.setItem('todos', JSON.stringify(this.todos))
+        },
+        addTodo: ()=>{
+          if(this.newTodo){
+              this.todos.push({ done: false, content: this.newTodo})
+              this.newTodo = ''
+              this.saveTodo()
+          }
+        },
+        doneTodo: (todo)=>{
+            todo.done = !todo.done
+            this.saveTodo()
+        },
+        removeTodo: (index)=>{
+            this.todos.splice(index, 1)
+            this.saveTodo()
+        },
     },
 }
 
